@@ -15,7 +15,7 @@ The HTTP Signature scheme provides a way to achieve origin authentication and me
 Requirements
 ------------
 
-* Python 2.7, 3.2+ (currently tested up to 3.4.1)
+* Python 2.7, 3.3+ (currently tested up to 3.4)
 * `httpsig`_
 
 

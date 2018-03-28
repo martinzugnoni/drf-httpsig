@@ -5,3 +5,5 @@
 build/
 dist/
 drf_httpsig.egg-info/
+/.eggs
+/.pytest_cache

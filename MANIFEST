@@ -6,8 +6,6 @@ requirements.txt
 setup.cfg
 setup.py
 test_settings.py
-versioneer.py
 drf_httpsig/__init__.py
-drf_httpsig/_version.py
 drf_httpsig/authentication.py
 drf_httpsig/tests.py

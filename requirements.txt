@@ -1,3 +1,4 @@
-django<1.7
-djangorestframework<3.0
-httpsig>=1.1
+# Known to work with these versions. Versions bracketed for safety.
+httpsig<2
+djangorestframework<3
+django<=1.7

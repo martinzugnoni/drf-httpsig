@@ -1,6 +1,12 @@
 drf-httpsig Changes
 ===================
 
+v1.2.0 (2018-Mar-28)
+--------------------
+
+* Updated to support and require httpsig 1.x.
+* Switched to pytest over nose
+
 v1.1.0 (2015-Feb-11)
 --------------------
 

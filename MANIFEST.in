@@ -1,4 +1,3 @@
 include *.rst
 include *.txt
-include versioneer.py
 include test_settings.py
