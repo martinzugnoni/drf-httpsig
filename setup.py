@@ -37,7 +37,11 @@ setup(
     zip_safe=True,
     use_scm_version=True,
     setup_requires=['pytest-runner', 'setuptools_scm'],
-    tests_require=['pytest', 'pytest-django'],
+    tests_require=[
+        'pytest',
+        'pytest-django',
+        'freezegun'
+    ],
     install_requires=[
         'djangorestframework>3',
         'django>=1.11',

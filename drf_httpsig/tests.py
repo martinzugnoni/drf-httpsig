@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+from freezegun import freeze_time
 from django.test import SimpleTestCase, TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from drf_httpsig.authentication import SignatureAuthentication
@@ -132,3 +135,25 @@ class SignatureAuthenticationTestCase(TestCase):
         result = self.auth.authenticate(request)
         self.assertIsNotNone(result)
         self.assertEqual(result[0], self.test_user)
+
+    @freeze_time("2020-02-15")
+    def test_expired_signature(self):
+        """
+        Should fail authentication with signature is expired.
+        """
+        headers = ['(request-target)', '(expires)', 'accept', 'date', 'host']
+        expected_signature = 'gQew3jrn38XfSVXi2nJ5E6AZOrrZm17rWnNiSlFZRhs='
+        expected_signature_string = build_signature(
+            headers,
+            key_id=KEYID,
+            signature=expected_signature)
+        headers = {
+            'HTTP_HOST': 'localhost:8000',
+            'HTTP_DATE': 'Mon, 17 Feb 2014 06:11:05 GMT',
+            'HTTP_ACCEPT': 'application/json',
+            'HTTP_(expires)': '1577847600',  # 2020-01-01
+            'HTTP_AUTHORIZATION': expected_signature_string,
+        }
+        request = RequestFactory().get('/packages/measures/', {}, **headers)
+        with self.assertRaises(AuthenticationFailed):
+            self.auth.authenticate(request)
