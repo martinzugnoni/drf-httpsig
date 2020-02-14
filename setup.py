@@ -23,9 +23,9 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.8.0",
+        "Programming Language :: Python :: 3.7.5",
+        "Programming Language :: Python :: 3.6.9",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
@@ -39,8 +39,8 @@ setup(
     setup_requires=['pytest-runner', 'setuptools_scm'],
     tests_require=['pytest', 'pytest-django'],
     install_requires=[
-        'djangorestframework<3',
-        'django<=1.7',
-        'httpsig<2'
+        'djangorestframework>3',
+        'django>=1.11',
+        'httpsig>=1.3.0'
     ]
 )

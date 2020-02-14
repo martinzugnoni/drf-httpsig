@@ -97,19 +97,19 @@ class SignatureAuthenticationTestCase(TestCase):
         """
         headers = ['(request-target)', 'accept', 'host', 'date']
         expected_signature = 'SelruOP39OWoJrSopfYJ99zOLoswmpyGXyDPdebeELc='
-        
+
         expected_signature_string = build_signature(
             headers,
             key_id=KEYID,
             signature=expected_signature)
-            
+
         request = RequestFactory().get(
             '/packages/measures/', {},
             HTTP_HOST='localhost:8000',
             HTTP_DATE='Mon, 17 Feb 2014 06:11:05 GMT',
             HTTP_ACCEPT='application/json',
             HTTP_AUTHORIZATION=expected_signature_string)
-            
+
         self.assertRaises(AuthenticationFailed, self.auth.authenticate, request)
 
     def test_valid_signature(self):
