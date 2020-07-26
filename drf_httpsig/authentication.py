@@ -45,6 +45,10 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         """Retuns a tuple (User, secret) or (None, None)."""
         raise NotImplementedError()
 
+    def fetch_on_behalf_of_user(self, user_id):
+        """Retuns the user object to be impersonated in the current request."""
+        raise NotImplementedError()
+
     def authenticate_header(self, request):
         """
         DRF sends this for unauthenticated responses if we're the primary
@@ -108,5 +112,11 @@ class SignatureAuthentication(authentication.BaseAuthentication):
             expires = None
         if expires and time.time() > expires:
             raise FAILED
+
+        if 'On-Behalf-Of' in request.headers:
+            user = self.fetch_on_behalf_of_user(request.headers['On-Behalf-Of'])
+            if not user:
+                raise exceptions.AuthenticationFailed("On behalf of user was not found.")
+            return (user, None)
 
         return (user, fields["keyid"])

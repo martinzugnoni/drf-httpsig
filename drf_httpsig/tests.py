@@ -41,6 +41,9 @@ class SignatureAuthenticationTestCase(TestCase):
 
             return (self.user, SECRET)
 
+        def fetch_on_behalf_of_user(self, user_id):
+            return self.user
+
     TEST_USERNAME = 'test-user'
     TEST_PASSWORD = 'test-password'
 
@@ -157,3 +160,26 @@ class SignatureAuthenticationTestCase(TestCase):
         request = RequestFactory().get('/packages/measures/', {}, **headers)
         with self.assertRaises(AuthenticationFailed):
             self.auth.authenticate(request)
+
+    def test_valid_signature_on_behalf_of_other_user(self):
+        """
+        A perfectly valid signature requesting on behalf of other user.
+        """
+        headers = ['(request-target)', 'accept', 'date', 'host']
+        expected_signature = 'SelruOP39OWoJrSopfYJ99zOLoswmpyGXyDPdebeELc='
+        expected_signature_string = build_signature(
+            headers,
+            key_id=KEYID,
+            signature=expected_signature)
+        request = RequestFactory().get(
+            '/packages/measures/', {},
+            HTTP_HOST='localhost:8000',
+            HTTP_DATE='Mon, 17 Feb 2014 06:11:05 GMT',
+            HTTP_ACCEPT='application/json',
+            HTTP_AUTHORIZATION=expected_signature_string,
+            HTTP_ON_BEHALF_OF=str(self.test_user.id))
+
+        result = self.auth.authenticate(request)
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], self.test_user)
+        self.assertEqual(result[1], None)
